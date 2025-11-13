@@ -3,7 +3,7 @@ This repository contains the code and data for the following paper:
 [HOIGPT: Learning Long Sequence Hand-Object Interaction with Language Models, CVPR 2025](https://arxiv.org/abs/2503.19157)
 
 ## Plan for Code Release:
-The source code of HOIGPT is currrently in Meta open source review process and will be released in June
+Releasing the core code for hoi tokenizer
 
 ## Citation
 ```
