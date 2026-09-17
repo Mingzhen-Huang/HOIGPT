@@ -1,0 +1,9 @@
+target: hoigpt.archs.hoigpt_lm.MLM
+params:
+  model_type: t5
+  model_path: ${LANGUAGE_MODEL.PATH}
+  stage: ${TRAIN.STAGE}
+  max_length: 1024
+  motion_codebook_size: ${model.params.codebook_size}
+  token_format: ${eval:'"hoi_triplet" if "${DATASET.CODE_FORMAT}" == "hoi_triplet" else "flat_motion"'}
+  ablation: ${ABLATION}

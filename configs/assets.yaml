@@ -1,0 +1,64 @@
+CONFIG_FOLDER: configs # Config files path
+FOLDER: experiments # Experiment files saving path
+
+TEST:
+  FOLDER: results # Testing files saving path
+
+DATASET:
+  TASK_ROOT: assets
+  SMPL_PATH: deps/smpl
+  TRANSFORM_PATH: deps/transforms/
+  WORD_VERTILIZER_PATH: deps/glove/
+  KIT:
+    ROOT: datasets/kit-ml # KIT directory
+    SPLIT_ROOT: datasets/kit-ml # KIT splits directory
+    MEAN_STD_PATH: deps/t2m/
+  HUMANML3D:
+    ROOT: dataset/HumanML3D/ # HumanML3D directory
+    SPLIT_ROOT: dataset/HumanML3D/ # HumanML3D splits directory
+    MEAN_STD_PATH: deps/t2m/
+  ARCTIC:
+    ROOT: dataset/hoigen/ # HumanML3D directory
+    SPLIT_ROOT: dataset/hoigen/ # HumanML3D splits directory
+    MEAN_STD_PATH: dataset/hoigen/
+  GRAB:
+    ROOT: dataset/hoigrab/ # HumanML3D directory
+    SPLIT_ROOT: dataset/hoigrab/ # HumanML3D splits directory
+    MEAN_STD_PATH: dataset/hoigrab/
+  GRABFULL:
+    ROOT: dataset/hoigrab_full/ # HumanML3D directory
+    SPLIT_ROOT: dataset/hoigrab_full/ # HumanML3D splits directory
+    MEAN_STD_PATH: dataset/hoigrab_full/
+  GRABSYN:
+    ROOT: dataset/grab_syn/ # HumanML3D directory
+    SPLIT_ROOT: dataset/grab_syn/ # HumanML3D splits directory
+    MEAN_STD_PATH: dataset/grab_syn/
+  ARCTICSY:
+    ROOT: dataset/hoigen_syn/ # HumanML3D directory
+    SPLIT_ROOT: dataset/hoigen_syn/ # HumanML3D splits directory
+    MEAN_STD_PATH: dataset/hoigen_syn/
+  ALL:
+    ROOT: dataset/hoiall/ # HumanML3D directory
+    SPLIT_ROOT: dataset/hoiall/ # HumanML3D splits directory
+    MEAN_STD_PATH: dataset/hoiall/
+METRIC:
+  TM2T:
+    t2m_path: checkpoints # contains arctic/ or grab/text_mot_match/model/finest.tar
+
+POINTNET:
+  CHECKPOINT: checkpoints/arctic/pointfeat.pth
+
+LANGUAGE_MODEL:
+  PATH: deps/flan-t5-base
+
+MANO:
+  ROOT: data/mano/mano_v1_2/models
+
+model:
+  whisper_path: deps/whisper-large-v2 # path for whisper model, webui only
+
+RENDER:
+  BLENDER_PATH: libs/blender-2.93.2-linux-x64/blender
+  SMPL_MODEL_PATH: deps/smpl/smpl_models/smpl
+  MODEL_PATH: deps/smpl/smpl_models/
+  FACES_PATH: deps/smplh/smplh.faces

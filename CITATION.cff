@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the HOIGPT paper."
+title: "HOIGPT: Training and Evaluation Code"
+type: software
+version: 0.1.0
+url: "https://github.com/Mingzhen-Huang/HOIGPT"
+repository-code: "https://github.com/Mingzhen-Huang/HOIGPT"
+license: MIT
+preferred-citation:
+  type: conference-paper
+  title: "HOIGPT: Learning Long-Sequence Hand-Object Interaction with Language Models"
+  year: 2025
+  authors:
+    - family-names: Huang
+      given-names: Mingzhen
+    - family-names: Chu
+      given-names: Fu-Jen
+    - family-names: Tekin
+      given-names: Bugra
+    - family-names: Liang
+      given-names: Kevin J.
+    - family-names: Ma
+      given-names: Haoyu
+    - family-names: Wang
+      given-names: Weiyao
+    - family-names: Chen
+      given-names: Xingyu
+    - family-names: Gleize
+      given-names: Pierre
+    - family-names: Xue
+      given-names: Hongfei
+    - family-names: Lyu
+      given-names: Siwei
+    - family-names: Kitani
+      given-names: Kris
+    - family-names: Feiszli
+      given-names: Matt
+    - family-names: Tang
+      given-names: Hao
+authors:
+  - family-names: Huang
+    given-names: Mingzhen

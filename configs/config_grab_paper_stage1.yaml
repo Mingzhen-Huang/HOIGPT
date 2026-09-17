@@ -1,0 +1,64 @@
+NAME: Paper_GRAB_Stage1
+ACCELERATOR: 'gpu'
+NUM_NODES: 1
+DEVICE: [0]
+
+TRAIN:
+  STAGE: vae
+  SPLIT: 'train'
+  NUM_WORKERS: 16
+  BATCH_SIZE: 512
+  END_EPOCH: 2000
+  RESUME: ''
+  PRETRAINED: ''
+  PRETRAINED_VAE: ''
+
+EVAL:
+  BATCH_SIZE: 1
+  SPLIT: val
+
+TEST:
+  CHECKPOINTS: ''
+  SPLIT: val
+  BATCH_SIZE: 1
+  SAVE_PREDICTIONS: False
+
+DATASET:
+  target: hoigpt.data.Grab.HOIDataModule
+  CODE_PATH: TOKENS_PAPER
+  CODE_FORMAT: hoi_triplet
+  NFEATS: 208
+
+METRIC:
+  TYPE: ['TM2TMetrics']
+
+LOSS:
+  LAMBDA_FEATURE: 1.0
+  LAMBDA_VELOCITY: 0.5
+  LAMBDA_COMMIT: 0.02
+  LAMBDA_CLS: 1.0
+  LAMBDA_GEO: 2.0
+  GEO_WEIGHTS:
+    PENETRATION: 1.0
+    APPROACH: 1.0
+    REGION: 1.0
+  ABLATION:
+    RECONS_LOSS: 'l1_smooth'
+
+model:
+  target: hoigpt.models.hoigpt.HOIGPT
+  params:
+    condition: 'text'
+    task: 't2m'
+    lm: ${lm.default}
+    motion_vae: ${vq.default}
+  pn: True
+  dual_decoder: False
+  dual_codebook: True
+
+LOGGER:
+  TYPE: ['wandb']
+  VAL_EVERY_STEPS: 10
+  WANDB:
+    params:
+      project: hoigpt_tokenizer

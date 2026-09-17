@@ -1,0 +1,2 @@
+# Install PyTorch first for your CUDA version. See README for PyTorch3D.
+.[train]

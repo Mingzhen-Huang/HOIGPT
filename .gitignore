@@ -1,0 +1,66 @@
+# Training-code release allowlist.
+#
+# This workspace also contains private datasets, restricted MANO assets,
+# checkpoints, legacy research code, and local experiment output. Ignore all
+# paths by default and explicitly allow the HOIGPT training/evaluation sources.
+*
+
+!/.gitignore
+!/CHANGELOG.md
+!/CITATION.cff
+!/LICENSE
+!/README.md
+!/THIRD_PARTY_NOTICES.md
+!/MANIFEST.in
+!/pyproject.toml
+!/setup.py
+!/requirements.txt
+!/train.py
+!/test.py
+
+!/scripts/
+!/scripts/get_motion_code.py
+
+!/configs/
+!/configs/default.yaml
+!/configs/assets.yaml
+!/configs/mano.yaml
+!/configs/config_hoi_paper_stage1.yaml
+!/configs/config_hoi_paper_stage2.yaml
+!/configs/config_hoi_paper_stage3.yaml
+!/configs/config_grab_paper_stage1.yaml
+!/configs/config_grab_paper_stage2.yaml
+!/configs/config_grab_paper_stage3.yaml
+!/configs/vq/
+!/configs/vq/default.yaml
+!/configs/lm/
+!/configs/lm/*.yaml
+!/configs/evaluator/
+!/configs/evaluator/tm2t.yaml
+
+!/assets/
+!/assets/template_pretrain.json
+!/assets/template_instructions.json
+
+!/LICENSES/
+!/LICENSES/**
+
+!/hoigpt/
+!/hoigpt/**
+
+!/tests/
+!/tests/__init__.py
+!/tests/test_core_tokenizer.py
+
+!/.github/
+!/.github/workflows/
+!/.github/workflows/core-tests.yml
+
+# Generated files inside allowlisted directories remain excluded.
+**/__pycache__/
+**/*.py[cod]
+**/*.egg-info/
+.pytest_cache/
+.coverage
+build/
+dist/

@@ -1,0 +1,35 @@
+include CHANGELOG.md
+include CITATION.cff
+include LICENSE
+include README.md
+include THIRD_PARTY_NOTICES.md
+include pyproject.toml
+include setup.py
+include requirements.txt
+include train.py
+include test.py
+
+include scripts/get_motion_code.py
+include configs/default.yaml
+include configs/assets.yaml
+include configs/mano.yaml
+include configs/config_hoi_paper_stage1.yaml
+include configs/config_hoi_paper_stage2.yaml
+include configs/config_hoi_paper_stage3.yaml
+include configs/config_grab_paper_stage1.yaml
+include configs/config_grab_paper_stage2.yaml
+include configs/config_grab_paper_stage3.yaml
+include configs/vq/default.yaml
+include configs/lm/*.yaml
+include configs/evaluator/tm2t.yaml
+include assets/template_pretrain.json
+include assets/template_instructions.json
+
+recursive-include LICENSES *.txt
+recursive-include hoigpt *.py py.typed
+
+recursive-exclude tests *
+include tests/__init__.py
+include tests/test_core_tokenizer.py
+
+global-exclude __pycache__ *.py[cod] .DS_Store

@@ -1,0 +1,82 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hoigpt"
+version = "0.1.0"
+description = "HOIGPT training, tokenization, and evaluation code"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {file = "LICENSE"}
+authors = [
+  {name = "Mingzhen Huang"},
+]
+keywords = [
+  "computer vision",
+  "hand-object interaction",
+  "motion generation",
+  "vector quantization",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "torch>=2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Mingzhen-Huang/HOIGPT"
+Paper = "https://arxiv.org/abs/2503.19157"
+Repository = "https://github.com/Mingzhen-Huang/HOIGPT"
+Issues = "https://github.com/Mingzhen-Huang/HOIGPT/issues"
+
+[tool.setuptools]
+include-package-data = true
+license-files = [
+  "LICENSE",
+  "LICENSES/*",
+  "THIRD_PARTY_NOTICES.md",
+]
+
+[tool.setuptools.package-data]
+hoigpt = ["py.typed"]
+
+[tool.setuptools.packages.find]
+include = ["hoigpt", "hoigpt.*"]
+
+[project.optional-dependencies]
+train = [
+  "numpy>=1.23.5,<2",
+  "pytorch-lightning>=2.0,<3",
+  "torchmetrics>=1.2,<2",
+  "transformers>=4.35,<5",
+  "sentencepiece",
+  "omegaconf>=2.3,<3",
+  "scipy",
+  "rich",
+  "tqdm",
+  "spacy>=3.5,<4",
+  "tensorboard",
+  "wandb",
+  "smplx==0.1.28",
+  "chumpy",
+  "trimesh>=3.9,<5",
+  "opencv-python<4.12",
+  "imageio",
+  "PyYAML",
+  "easydict",
+  "matplotlib",
+  "shapely",
+  "einops",
+]
+caption-eval = ["bert-score", "nlgmetricverse"]
