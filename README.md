@@ -9,9 +9,13 @@ Interaction with Language Models** (CVPR 2025).
 This release includes the original three-stage training pipeline, motion-token
 export, and evaluation code, migrated into the `hoigpt` Python package. It is **not
 tokenizer-only**. Datasets, model weights, MANO assets, and experiment outputs are
-not bundled. Training starts from the prepared HOI features described below; raw
-ARCTIC/GRAB preprocessing and training of the external PointNet/evaluation models
-are not included.
+not bundled. Training starts from prepared HOI features. Checkpoint-free ARCTIC/GRAB
+feature converters, caption processing, normalization, and object-cache tools are
+now included; see the [resource preparation guide](docs/resources.md).
+The exact paper raw-to-clip manifest and all official split provenance are not yet
+verified. Historical object point indices are included, but rebuilt normals are
+not equivalent to the old cache. Training of the external PointNet/evaluation
+models is not included.
 
 ## Code layout
 
@@ -19,6 +23,7 @@ are not included.
 train.py                       Original Lightning training entry point
 test.py                        Original generation/reconstruction evaluation
 scripts/get_motion_code.py     Export trained tokenizer outputs
+scripts/prepare_data.py        Checkpoint-free data/resource preparation
 hoigpt/
   archs/                       Training VQ tokenizer, language model, evaluators
   models/                      HOIGPT model and stage-specific training logic
@@ -27,8 +32,11 @@ hoigpt/
   metrics/                     Retrieval, FID, diversity, and caption metrics
   lib/                         Required MANO, object, PointNet, geometry utilities
   tokenizer.py                 Lightweight standalone tokenizer API
+  preprocessing/               Raw clip conversion, statistics, object caches
 configs/                       Three-stage ARCTIC/GRAB configurations
 assets/                        Original pretraining/instruction templates
+  resources/                   Labeled local ARCTIC snapshot and manifest examples
+docs/resources.md              Preparation commands, provenance, missing resources
 ```
 
 The training architecture is `hoigpt.archs.hoigpt_vq.VQVae`; the Lightning model is
@@ -65,6 +73,25 @@ The spaCy model is also needed if `DATASET.ARCTIC.STD_TEXT` or
 
 ## Data and external assets
 
+Start with the [resource preparation guide](docs/resources.md) for raw-data
+conversion and existing split/normalization metadata. The included ARCTIC snapshot
+has 5,423 training and 111 validation IDs, but no test list; it is explicitly a
+local prepared-data snapshot, not a certified paper split. Do not combine its IDs
+with a newly numbered raw-data manifest. GRAB's original clip/split manifest still
+needs to be recovered. This update provides preparation code and metadata, not
+raw datasets or downloadable prepared motions. Obtain the licensed data separately.
+
+Data preparation tools are available through:
+
+```bash
+python -m pip install -e '.[preprocess]'
+python scripts/prepare_data.py --help
+```
+
+See the guide for raw clip conversion, caption processing, normalization,
+snapshot restoration, and object-cache generation. For model weights, see
+[Checkpoint status](#checkpoint-status).
+
 Set local paths in [`configs/assets.yaml`](configs/assets.yaml), or override any
 configuration value with repeated `--set KEY=VALUE` arguments.
 
@@ -91,7 +118,7 @@ Each prepared dataset root has this layout:
 dataset/hoigen/                 # or dataset/hoigrab/
   train.txt
   val.txt
-  test.txt
+  test.txt                     # required for test evaluation; not bundled
   mean.npy                     # [208]
   std.npy                      # [208], nonzero normalization scales
   new_joints/<name>.npy         # [T, 208] unnormalized HOI features
@@ -123,6 +150,16 @@ exporter apply stride 4 to sequences longer than 400 frames. Do not independentl
 resample only one stage. The language-model context length is configurable through
 `lm.default.params.max_length`; structured triplets take six language-model tokens
 per VQ timestep plus boundary tokens, so longer data may need a larger value.
+
+## Checkpoint status
+
+**Checkpoints: to be tuned.** Pretrained HOIGPT checkpoints, including the Stage 1
+tokenizer and Stage 3 language model, are not included in this update. Their
+release is pending tuning and validation; no download links are available yet.
+The matching PointNet and text-motion evaluator weights are also pending release.
+The commands below describe the training/evaluation workflow, but require the
+corresponding external assets; the current repository alone is not a complete
+paper-reproduction bundle.
 
 ## Training
 

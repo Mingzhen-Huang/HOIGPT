@@ -6,6 +6,9 @@ class ObjectModel:
         self.pkl_file = pkl_file
         with open(pkl_file, "rb") as f:
             data = pickle.load(f)
+            # New preparation caches explicitly preserve mesh-file vertex order.
+            # Unmarked historical caches retain the previous loader behavior.
+            self.mesh_process = data.get('vertex_order') != 'file_order_process_false'
             self.object_name = data["object_name"]
             self.obj_pcs = data["obj_pcs"]
             self.obj_pc_normals = data["obj_pc_normals"]

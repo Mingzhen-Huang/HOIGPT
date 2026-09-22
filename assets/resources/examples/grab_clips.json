@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "dataset": "grab",
+  "status": "Format example: replace source, frames, caption, and ID using your verified clip manifest",
+  "clips": [
+    {
+      "id": "example_mug",
+      "source": "s1/mug_lift.npz",
+      "start": 10,
+      "end": 60,
+      "caption": "lift the mug with the right hand",
+      "tokens": "lift/VERB the/DET mug/NOUN with/ADP the/DET right/ADJ hand/NOUN"
+    }
+  ]
+}

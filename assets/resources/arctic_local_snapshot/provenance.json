@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "dataset": "arctic",
+  "status": "local snapshot, not a certified paper split",
+  "counts": {
+    "train": 5423,
+    "val": 111
+  },
+  "test_split": "not present; not generated",
+  "raw_id_mapping": "not recovered; requires a matching source manifest",
+  "normalization_fit_population": "unknown; original statistics script used all feature files",
+  "object_points": "file-order indices checked for 11 meshes within 2e-8 meters; recomputed normals differ from the historical cache",
+  "files": {
+    "train.txt": {
+      "sha256": "6e00e55d7ef07d143f4d79ead7cdf4c27e6a686d042646c6374738b80d21755b"
+    },
+    "val.txt": {
+      "sha256": "e2970465cf64527d0a64d72f63412132a3accf6b2641f537ec062abb1ee0a080"
+    },
+    "train_val.txt": {
+      "sha256": "fcbaea8e728a4e873d60dcc685ec0d7a460aa3a7653cd121e1e3c771580e1358"
+    },
+    "mean.npy": {
+      "sha256": "96cf2d6dfbe58fabfebc56770abed621e379919af15bdc744051b92f1ad60d52"
+    },
+    "std.npy": {
+      "sha256": "96a13e56b6cb75078e29d40cf0eb1587be1c1c2f5ea78e0f45cbbf5884125019"
+    }
+  }
+}

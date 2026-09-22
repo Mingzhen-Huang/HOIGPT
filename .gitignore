@@ -20,6 +20,10 @@
 
 !/scripts/
 !/scripts/get_motion_code.py
+!/scripts/prepare_data.py
+
+!/docs/
+!/docs/resources.md
 
 !/configs/
 !/configs/default.yaml
@@ -41,6 +45,16 @@
 !/assets/
 !/assets/template_pretrain.json
 !/assets/template_instructions.json
+!/assets/resources/
+!/assets/resources/arctic_local_snapshot/
+!/assets/resources/arctic_local_snapshot/train.txt
+!/assets/resources/arctic_local_snapshot/val.txt
+!/assets/resources/arctic_local_snapshot/normalization.json
+!/assets/resources/arctic_local_snapshot/object_points.json
+!/assets/resources/arctic_local_snapshot/provenance.json
+!/assets/resources/examples/
+!/assets/resources/examples/arctic_clips.json
+!/assets/resources/examples/grab_clips.json
 
 !/LICENSES/
 !/LICENSES/**

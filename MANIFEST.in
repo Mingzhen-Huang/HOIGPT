@@ -10,6 +10,15 @@ include train.py
 include test.py
 
 include scripts/get_motion_code.py
+include scripts/prepare_data.py
+include docs/resources.md
+include assets/resources/arctic_local_snapshot/train.txt
+include assets/resources/arctic_local_snapshot/val.txt
+include assets/resources/arctic_local_snapshot/normalization.json
+include assets/resources/arctic_local_snapshot/object_points.json
+include assets/resources/arctic_local_snapshot/provenance.json
+include assets/resources/examples/arctic_clips.json
+include assets/resources/examples/grab_clips.json
 include configs/default.yaml
 include configs/assets.yaml
 include configs/mano.yaml

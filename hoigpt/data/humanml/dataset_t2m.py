@@ -232,7 +232,7 @@ class Text2MotionDataset(data.Dataset):
         obj_root = pjoin(self.data_root, 'meshes')
         obj_file = get_obj_file(obj_root, object_name, dataname)
         
-        obj_mesh = trimesh.load(obj_file, maintain_order=True)
+        obj_mesh = trimesh.load(obj_file, maintain_order=True, process=object_model.mesh_process)
         obj_verts_org = obj_mesh.vertices.copy()
         # import pdb; pdb.set_trace()
 

@@ -124,7 +124,7 @@ def get_object_hand_info(object_name, object_model, obj_root=None):
     if obj_root is None:
         obj_root = osp.join(osp.dirname(object_model.pkl_file), "meshes")
     obj_file = get_obj_file(obj_root, object_name, "arctic")
-    obj_mesh = trimesh.load(obj_file, maintain_order=True)
+    obj_mesh = trimesh.load(obj_file, maintain_order=True, process=object_model.mesh_process)
     obj_verts_org = proc_torch_cuda(obj_mesh.vertices.copy())
     obj_verts_org = obj_verts_org/1000
     point_set, obj_pc, obj_pc_normal, _, obj_pc_top_idx = object_model(object_name)
@@ -149,7 +149,7 @@ def get_object_hand_info(object_name, object_model, obj_root=None):
 
 def get_hoi_info(obj_root, dataname, object_name, object_model):
     obj_file = get_obj_file(obj_root, object_name, dataname)
-    obj_mesh = trimesh.load(obj_file, maintain_order=True)
+    obj_mesh = trimesh.load(obj_file, maintain_order=True, process=object_model.mesh_process)
     # import pdb; pdb.set_trace()
     obj_verts_org = proc_torch_cuda(obj_mesh.vertices.copy())
     if "arctic" in dataname:

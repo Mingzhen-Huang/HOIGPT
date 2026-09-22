@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "dataset": "arctic",
+  "status": "Format example, not the paper ID mapping or split",
+  "clips": [
+    {
+      "id": "example_box",
+      "source": "s01/box_use_02",
+      "start": 42,
+      "end": 62,
+      "caption": "grasp box with both hands",
+      "tokens": "grasp/VERB box/NOUN with/ADP both/DET hand/NOUN"
+    }
+  ]
+}

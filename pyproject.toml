@@ -55,6 +55,12 @@ hoigpt = ["py.typed"]
 include = ["hoigpt", "hoigpt.*"]
 
 [project.optional-dependencies]
+preprocess = [
+  "numpy>=1.23.5,<2",
+  "scipy",
+  "spacy>=3.5,<4",
+  "trimesh>=3.9,<5",
+]
 train = [
   "numpy>=1.23.5,<2",
   "pytorch-lightning>=2.0,<3",
