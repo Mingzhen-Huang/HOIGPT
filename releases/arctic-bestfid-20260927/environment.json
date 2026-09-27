@@ -1,0 +1,15 @@
+{
+  "observed_package_versions": {
+    "torch": "2.2.0+cu118",
+    "torchvision": "0.17.0+cu118",
+    "pytorch-lightning": "2.2.1",
+    "torchmetrics": "1.6.1",
+    "transformers": "4.48.1",
+    "numpy": "1.23.0",
+    "scipy": "1.15.1",
+    "omegaconf": "2.4.0.dev3",
+    "sentencepiece": null,
+    "pytorch3d": "0.7.8"
+  },
+  "description": "Environment used for the published checkpoint; not a portable lockfile"
+}

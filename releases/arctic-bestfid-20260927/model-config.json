@@ -1,0 +1,62 @@
+{
+  "vae": {
+    "params": {
+      "ablation": {
+        "DIFF_PE_TYPE": "actor",
+        "IS_DIST": false,
+        "MLP_DIST": false,
+        "PE_TYPE": "actor",
+        "PREDICT_EPSILON": true,
+        "SKIP_CONNECT": false,
+        "VAE_ARCH": "encoder_decoder",
+        "VAE_TYPE": "actor",
+        "image_size": 256,
+        "inbetween_ratio": 0.25,
+        "predict_ratio": 0.2,
+        "use_length": false
+      },
+      "activation": "relu",
+      "code_dim": 512,
+      "code_num": 512,
+      "depth": 3,
+      "dilation_growth_rate": 3,
+      "down_t": 2,
+      "dual_codebook": true,
+      "dual_decoder": false,
+      "nfeats": 208,
+      "norm": "None",
+      "output_emb_width": 512,
+      "pointnet": true,
+      "pointnet_checkpoint": "pointfeat.pth",
+      "quantizer": "ema_reset",
+      "stride_t": 2,
+      "width": 512
+    },
+    "target": "hoigpt.archs.hoigpt_vq.VQVae"
+  },
+  "lm": {
+    "params": {
+      "ablation": {
+        "DIFF_PE_TYPE": "actor",
+        "IS_DIST": false,
+        "MLP_DIST": false,
+        "PE_TYPE": "actor",
+        "PREDICT_EPSILON": true,
+        "SKIP_CONNECT": false,
+        "VAE_ARCH": "encoder_decoder",
+        "VAE_TYPE": "actor",
+        "image_size": 256,
+        "inbetween_ratio": 0.25,
+        "predict_ratio": 0.2,
+        "use_length": false
+      },
+      "max_length": 1024,
+      "model_path": "google/flan-t5-base",
+      "model_type": "t5",
+      "motion_codebook_size": 512,
+      "stage": "lm_instruct",
+      "token_format": "hoi_triplet"
+    },
+    "target": "hoigpt.archs.hoigpt_lm.MLM"
+  }
+}

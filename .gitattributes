@@ -1,0 +1,2 @@
+releases/arctic-bestfid-20260927/*.ckpt filter=lfs diff=lfs merge=lfs -text
+releases/arctic-bestfid-20260927/pointfeat.pth filter=lfs diff=lfs merge=lfs -text

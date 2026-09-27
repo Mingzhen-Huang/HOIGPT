@@ -110,8 +110,17 @@ imports it; this distribution does not vendor the SMPL-X/MANO implementation
 or the MANO model files. Users must obtain the model files and accept their
 applicable terms independently.
 
-Datasets, pretrained language models, PointNet and evaluator checkpoints,
-trained HOIGPT weights, and experiment outputs are not included. They must be
-obtained independently under their respective terms. The published source
-also excludes the legacy MPG-proprietary transformation utilities and the
-QuaterNet-derived HumanML3D quaternion preprocessing code.
+The versioned [ARCTIC model release](releases/arctic-bestfid-20260927/README.md)
+includes trained HOIGPT tokenizer and Stage 3 weights, an embedded evaluator,
+and a PointNet initialization checkpoint extracted from the tokenizer. The
+Stage 3 language-model parameters are derived from
+[Google FLAN-T5-base](https://huggingface.co/google/flan-t5-base), whose model card
+specifies Apache License 2.0; the license text is included in
+[LICENSES/Apache-2.0.txt](LICENSES/Apache-2.0.txt). The release expands the
+vocabulary and fine-tunes those weights for HOI pretraining and instruction tuning.
+The original base-model files and tokenizer assets must still be obtained separately.
+
+Raw datasets, MANO model files, GloVe and full training-resume outputs are not
+included. Obtain external assets independently under their respective terms.
+The published source also excludes the legacy MPG-proprietary transformation
+utilities and the QuaterNet-derived HumanML3D quaternion preprocessing code.

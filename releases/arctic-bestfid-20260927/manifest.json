@@ -1,0 +1,132 @@
+{
+  "base_repository_commit": "6010537c45d9bfc9feb0ae5b0b9b5335de5ba7c2",
+  "codebook": {
+    "epoch": 379,
+    "epoch_number": 380,
+    "file": "codebook-epoch0380.ckpt",
+    "reconstruction_fid": 0.4223284242878549,
+    "training_source_sha256": "a600bdeb72c37c4e332a2191b7c59978f679f485de03b06229cfa562b12ce908"
+  },
+  "files": {
+    "README.md": {
+      "bytes": 6415,
+      "sha256": "33bc8ac36409483a5a8ecbefd7e2b7b750afbf71fc52ae72b6a34d1bb5a23f3d"
+    },
+    "codebook-epoch0380.ckpt": {
+      "bytes": 180472522,
+      "sha256": "2bab59bfd812a0830193fb3943fb5997ad87c11566fdd664e8ade3f5f372afbf"
+    },
+    "codebook-recipe.json": {
+      "bytes": 1211,
+      "sha256": "41580fa461314eba844fa3b845b74ce61f529d1ad64a55a9b2ea3e5c4e443734"
+    },
+    "environment.json": {
+      "bytes": 417,
+      "sha256": "71e07cc37e375b4f002dde76a35da408a5f5dcddf25537698081ef11d0029974"
+    },
+    "hoi-instructions.json": {
+      "bytes": 1736,
+      "sha256": "147fd3810286a54c79ebf897d12cebd50a6045f7949456b390fd92fdd5a85573"
+    },
+    "hoi-tokens.json": {
+      "bytes": 32294,
+      "sha256": "e1c768e9153b22130774a855286938ba9bdf113aee5914603f41feaf9936a830"
+    },
+    "mean.npy": {
+      "bytes": 1792,
+      "sha256": "96cf2d6dfbe58fabfebc56770abed621e379919af15bdc744051b92f1ad60d52"
+    },
+    "model-config.json": {
+      "bytes": 1568,
+      "sha256": "b74325305a9036adcc225554186bd3cfc1d92e80aa12854bd37c1aa84ed7753f"
+    },
+    "pointfeat.pth": {
+      "bytes": 3827484,
+      "sha256": "4994bfa5ca59fe062c71d6c7ff66144502f1e39a320cbd01277cc7c932455a9e"
+    },
+    "source-manifest.json": {
+      "bytes": 15163,
+      "sha256": "7ef19ce9bcdec2e0277d4551805edcc75c0429aa44d9ff95a9f1a6cfdc5be5ba"
+    },
+    "source.tar.gz": {
+      "bytes": 115631,
+      "sha256": "dd8e7e89c26a03cfc87d3a5170a0ba8e3827eb336d9ef24e8750b4c8c3b6f57b"
+    },
+    "stage2-training.yaml": {
+      "bytes": 1304,
+      "sha256": "d123e05a79733220c3d9505a436cac764256d41fd84668a5ec902a0afab82c49"
+    },
+    "stage3-epoch0010.ckpt": {
+      "bytes": 1349816167,
+      "sha256": "5bb49c6acbe7d014728ac01a8e011574b6bdc8eb961c8b84a5d47b559fb3840a"
+    },
+    "stage3-training.yaml": {
+      "bytes": 1322,
+      "sha256": "81e8a8edd1a2a77781cb3f17bcb88f63f80b49f546a0d0a45f83ff7794ba7066"
+    },
+    "std.npy": {
+      "bytes": 1792,
+      "sha256": "96a13e56b6cb75078e29d40cf0eb1587be1c1c2f5ea78e0f45cbbf5884125019"
+    },
+    "verify_weights.py": {
+      "bytes": 8418,
+      "sha256": "351d4a3a2923872e19f0c4ae0ab135833958f121a43eae7f20553b12c0355e24"
+    },
+    "weights-verification.json": {
+      "bytes": 1207,
+      "sha256": "8447f9e12147928d1dc31b2b1d03d462caf01794f27749910a190d7ce0693fa9"
+    }
+  },
+  "load_verification": {
+    "embedded_tokenizer_equals_standalone": true,
+    "lm_strict_load": true,
+    "loaded_tensor_equality": true,
+    "passed": true,
+    "preserved_evaluator_tensor_count": 84,
+    "vae_strict_load": true,
+    "weights_only": true
+  },
+  "matching_tokenizer_verified": true,
+  "pointnet": {
+    "file": "pointfeat.pth",
+    "source": "exact frozen PointNet tensors embedded in the released codebook"
+  },
+  "release": "arctic-bestfid-20260927",
+  "snapshot_at_utc": "2026-09-27T15:50:27.145774+00:00",
+  "source_sha256": "7f3eaac72c1dc6f1cfae3466cc0e41d1d0f1bbcf3d703f8a03b65ba97b754a11",
+  "stage3": {
+    "epoch": 9,
+    "epoch_number": 10,
+    "file": "stage3-epoch0010.ckpt",
+    "global_step": 30510,
+    "source_checkpoint_sha256": "9f6394753cfe106bcdc504942a010713a0778075416414801274ab53fa477398",
+    "stage2_best_fid": 3.5523691177368164,
+    "started_from_stage2_epoch_number": 80,
+    "training_complete": false,
+    "validation_fid": 2.9045820236206055,
+    "validation_history_at_snapshot": [
+      {
+        "epoch_number": 10,
+        "fid": 2.9045820236206055
+      },
+      {
+        "epoch_number": 20,
+        "fid": 3.122708797454834
+      }
+    ]
+  },
+  "tensor_values_preserved": true,
+  "tokens_manifest_sha256": "6d29bca075eb7ca2b988a894deb220a96cf6edee5797ca81fe7058beb8f6f738",
+  "validation_protocol": {
+    "codebook_reconstruction_samples": 101,
+    "dataset": "local ARCTIC validation split, not the paper mixed benchmark",
+    "filtered_short_motion_ids": 10,
+    "final_independent_20_seed_evaluation_complete": false,
+    "generation_fid_samples_with_sampler_padding": 104,
+    "generation_fid_world_size": 8,
+    "retrieval_effective_samples": 96,
+    "retrieval_group_size": 32,
+    "split_ids": 111,
+    "unique_evaluated_ids": 101
+  }
+}

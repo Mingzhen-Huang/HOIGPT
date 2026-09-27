@@ -78,3 +78,9 @@
 .coverage
 build/
 dist/
+
+# Explicitly published, versioned model snapshot.
+!/.gitattributes
+!/releases/
+!/releases/arctic-bestfid-20260927/
+!/releases/arctic-bestfid-20260927/**

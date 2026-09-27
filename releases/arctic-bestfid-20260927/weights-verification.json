@@ -1,0 +1,43 @@
+{
+  "all_loaded_tensors_equal": true,
+  "checks_excluded": [
+    "full FID evaluation",
+    "motion generation",
+    "training",
+    "dataset loading"
+  ],
+  "codebook": {
+    "path": "codebook-epoch0380.ckpt",
+    "sha256": "2bab59bfd812a0830193fb3943fb5997ad87c11566fdd664e8ade3f5f372afbf",
+    "state_keys": 204
+  },
+  "device": "cpu",
+  "inference_only_not_exact_training_resume": true,
+  "lm_strict_load": true,
+  "lm_tensor_count": 284,
+  "model_configuration": "model-config.json",
+  "ordered_added_tokens": "hoi-tokens.json",
+  "passed": true,
+  "pointnet": {
+    "path": "pointfeat.pth",
+    "sha256": "4994bfa5ca59fe062c71d6c7ff66144502f1e39a320cbd01277cc7c932455a9e",
+    "state_keys": 58
+  },
+  "preserved_evaluator_tensor_count": 84,
+  "shared_embedding_shape": [
+    33130,
+    768
+  ],
+  "source": "source/ (extracted source.tar.gz)",
+  "stage3": {
+    "path": "stage3-epoch0010.ckpt",
+    "sha256": "5bb49c6acbe7d014728ac01a8e011574b6bdc8eb961c8b84a5d47b559fb3840a",
+    "state_keys": 581
+  },
+  "stage3_embedded_vae_equals_codebook": true,
+  "tokenizer_length": 33130,
+  "torch": "2.2.0+cu118",
+  "vae_strict_load": true,
+  "vae_tensor_count": 204,
+  "weights_only_deserialization": true
+}

@@ -1,0 +1,52 @@
+NAME: VGeo51_BestFID_Stage3_8GPU
+ACCELERATOR: gpu
+NUM_NODES: 1
+DEVICE: [0, 1, 2, 3, 4, 5, 6, 7]
+SEED_VALUE: 1234
+TRAIN:
+  STAGE: lm_instruct
+  NUM_WORKERS: 2
+  BATCH_SIZE: 2
+  END_EPOCH: 100
+  RESUME: ''
+  PRETRAINED: ''
+  PRETRAINED_VAE: /projects/mingzhen/hoi/HOIGPT/results/t5_vgeo51_bestfid_8gpu_20260926/assets/tokenizer_best_fid.ckpt
+  OPTIM:
+    target: AdamW
+    params:
+      lr: 0.0002
+      betas: [0.9, 0.99]
+      weight_decay: 0.0
+  LR_SCHEDULER:
+    target: CosineAnnealingLR
+    params:
+      T_max: 1000
+      eta_min: 0.000001
+EVAL:
+  BATCH_SIZE: 1
+  NUM_WORKERS: 2
+  SPLIT: val
+DATASET:
+  target: hoigpt.data.Arctic.HOIDataModule
+  CODE_PATH: /projects/mingzhen/hoi/HOIGPT/results/t5_vgeo51_bestfid_8gpu_20260926/assets/tokens
+  CODE_FORMAT: hoi_triplet
+  TASK_PATH: /projects/mingzhen/hoi/HOIGPT/results/t5_vgeo51_bestfid_8gpu_20260926/source/configs/hoi_instructions_audit_v1.json
+  NFEATS: 208
+  Arc: true
+METRIC:
+  TYPE: [TM2TMetrics]
+  TM2T_CHECKPOINT: /projects/mingzhen/hoi/HOIGPT_new/checkpoints/arctic/text_mot_match/model/finest.tar
+  DIVERSITY_TIMES: 100
+model:
+  target: hoigpt.models.hoigpt.HOIGPT
+  params:
+    condition: text
+    task: t2m
+    lm: ${lm.default}
+    motion_vae: ${vq.default}
+  pn: true
+  dual_decoder: false
+  dual_codebook: true
+LOGGER:
+  TYPE: []
+  VAL_EVERY_STEPS: 10

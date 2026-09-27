@@ -1,0 +1,80 @@
+{
+  "Text-to-Motion": {
+    "caption": {
+      "input": [
+        "Generate hand-object motion: <Caption_Placeholder>"
+      ],
+      "output": [
+        "<Motion_Placeholder>"
+      ]
+    },
+    "caption_framelen": {
+      "input": [
+        "Generate <Frame_Placeholder> frames of hand-object motion: <Caption_Placeholder>"
+      ],
+      "output": [
+        "<Motion_Placeholder>"
+      ]
+    },
+    "caption_seclen": {
+      "input": [
+        "Generate <Second_Placeholder> seconds of hand-object motion: <Caption_Placeholder>"
+      ],
+      "output": [
+        "<Motion_Placeholder>"
+      ]
+    }
+  },
+  "Motion-to-Text": {
+    "caption": {
+      "input": [
+        "Describe this hand-object interaction: <Motion_Placeholder>"
+      ],
+      "output": [
+        "<Caption_Placeholder>"
+      ]
+    },
+    "count-frame": {
+      "input": [
+        "How many frames are in <Motion_Placeholder>?"
+      ],
+      "output": [
+        "<Frame_Placeholder> frames."
+      ]
+    },
+    "count-sec": {
+      "input": [
+        "How long is <Motion_Placeholder>?"
+      ],
+      "output": [
+        "<Second_Placeholder> seconds."
+      ]
+    }
+  },
+  "Motion-to-Motion": {
+    "motion_prediction": {
+      "input": [
+        "Predict motion: <Motion_Placeholder_s1>"
+      ],
+      "output": [
+        "<Motion_Placeholder_s2>"
+      ]
+    },
+    "motion_inbetween": {
+      "input": [
+        "Complete the masked motion: <Motion_Placeholder_Masked>"
+      ],
+      "output": [
+        "<Motion_Placeholder>"
+      ]
+    },
+    "object_conditioned": {
+      "input": [
+        "Complete the hand motions for this object motion: <Motion_Placeholder_Object>"
+      ],
+      "output": [
+        "<Motion_Placeholder>"
+      ]
+    }
+  }
+}

@@ -8,8 +8,9 @@ Interaction with Language Models** (CVPR 2025).
 
 This release includes the original three-stage training pipeline, motion-token
 export, and evaluation code, migrated into the `hoigpt` Python package. It is **not
-tokenizer-only**. Datasets, model weights, MANO assets, and experiment outputs are
-not bundled. Training starts from prepared HOI features. Checkpoint-free ARCTIC/GRAB
+tokenizer-only**. A paired dual-codebook and Stage 3 model snapshot is now
+available through Git LFS; see [Checkpoint status](#checkpoint-status).
+Datasets, MANO assets, and full training-resume outputs are not bundled. Training starts from prepared HOI features. Checkpoint-free ARCTIC/GRAB
 feature converters, caption processing, normalization, and object-cache tools are
 now included; see the [resource preparation guide](docs/resources.md).
 The exact paper raw-to-clip manifest and all official split provenance are not yet
@@ -153,13 +154,19 @@ per VQ timestep plus boundary tokens, so longer data may need a larger value.
 
 ## Checkpoint status
 
-**Checkpoints: to be tuned.** Pretrained HOIGPT checkpoints, including the Stage 1
-tokenizer and Stage 3 language model, are not included in this update. Their
-release is pending tuning and validation; no download links are available yet.
-The matching PointNet and text-motion evaluator weights are also pending release.
-The commands below describe the training/evaluation workflow, but require the
-corresponding external assets; the current repository alone is not a complete
-paper-reproduction bundle.
+The [2026-09-27 ARCTIC model snapshot](releases/arctic-bestfid-20260927/README.md)
+contains the best dual-codebook tokenizer (epoch 380, reconstruction FID 0.4223)
+and current best Stage 3 model (epoch 10, generation validation FID 2.9046).
+Stage 3 was initialized from Stage 2 epoch 80 best and is still training.
+The two checkpoints have identical tokenizer parameters. Downloads, checksums,
+matching source, model configurations, normalization arrays and strict-load
+verification are included in the release directory.
+
+Use Git LFS to download the model files and use the matching archived source.
+The released weights omit optimizer/RNG state and are intended for inference or
+weight initialization. These are local ARCTIC results; the final 20-seed
+evaluation is pending and paper benchmark reproduction is not certified.
+GRAB weights, raw datasets and licensed MANO assets are not included.
 
 ## Training
 
@@ -271,15 +278,14 @@ assets and rendering dependencies.
 
 ## Release notes
 
-This is a source-code release, not a bundle of trained weights or preprocessed
-datasets. Reproducing paper scores requires the matching data preparation,
-checkpoints, and evaluation assets. Packaging and entry-point/configuration checks
-do not establish reproduced paper metrics; no full training or benchmark run is
-claimed for this release preparation.
+This repository includes source code and the versioned ARCTIC model snapshot
+linked above. Reproducing paper scores requires the matching data preparation,
+checkpoints and evaluation assets. Published local validation scores and strict
+loading checks do not establish reproduction of the paper benchmark.
 
 The published files are allowlisted in `.gitignore` and `MANIFEST.in`. Old local
 research directories, private machine-specific configs, datasets, MANO files,
-checkpoints, and experiment logs are excluded. Historical local directories may
+unreleased checkpoints, and experiment logs are excluded. Historical local directories may
 still exist in a development workspace; they are neither imported nor released.
 
 Only load trusted training checkpoints: the original Lightning checkpoints include
