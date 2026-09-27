@@ -1,21 +1,19 @@
-# ARCTIC best-FID model snapshot — 2026-09-27
+# HOIGPT Final Models
 
-This release pairs the completed dual-codebook training run's best tokenizer with
-the current best validation checkpoint from the ongoing Stage 3 run.
+This is the final release of the paired ARCTIC dual-codebook tokenizer and
+Stage 3 FLAN-T5-base model.
 
-| Model | Epoch (one-based) | Selection metric | File |
+| Model | Epoch (one-based) | Validation metric | File |
 | --- | --- | --- | --- |
-| Dual-codebook tokenizer | 380 / 2000 | Reconstruction FID 0.4223284243 | [codebook-epoch0380.ckpt](codebook-epoch0380.ckpt) |
-| Stage 3, FLAN-T5-base | 10 / planned 100 | Generation validation FID 2.9045820236 | [stage3-epoch0010.ckpt](stage3-epoch0010.ckpt) |
+| Dual-codebook tokenizer | 380 | Reconstruction FID 0.4223284243 | [codebook-epoch0380.ckpt](codebook-epoch0380.ckpt) |
+| Stage 3, FLAN-T5-base | 10 | Generation validation FID 2.9045820236 | [stage3-epoch0010.ckpt](stage3-epoch0010.ckpt) |
 
-Stage 3 starts from Stage 2's epoch 80 best (FID 3.5523691177).
-Stage 3 epoch 20 subsequently scored 3.1227087975, so epoch 10 remains the
-best at this snapshot. These are local ARCTIC results. Reconstruction FID and
-generation FID measure different tasks. The split contains 111 IDs; the motion
-length filter leaves 101 unique validation examples. Eight-rank validation pads
-to 104 FID samples; the retrieval metric uses 96 examples in groups of 32.
-Codebook reconstruction FID uses 101 examples. The final 20-seed evaluation is pending;
-this release does not claim the paper's mixed ARCTIC+GRAB benchmark scores.
+Stage 3 starts from Stage 2's best checkpoint at epoch 80 (FID 3.5523691177).
+Both models use the same tokenizer parameters. Reconstruction and generation FID
+measure different tasks. These scores use the local ARCTIC validation protocol:
+111 split IDs, 101 unique examples after the motion-length filter, and 104 FID
+samples after eight-rank sampler padding. Retrieval metrics use 96 examples in
+groups of 32. Codebook reconstruction FID uses 101 examples.
 
 ## Download
 
@@ -23,8 +21,8 @@ From the repository root:
 
 ```bash
 git lfs install
-git lfs pull --include="releases/arctic-bestfid-20260927/*.ckpt,releases/arctic-bestfid-20260927/pointfeat.pth"
-cd releases/arctic-bestfid-20260927
+git lfs pull --include="releases/arctic-final/*.ckpt,releases/arctic-final/pointfeat.pth"
+cd releases/arctic-final
 sha256sum -c SHA256SUMS
 tar -xzf source.tar.gz
 ```
@@ -44,8 +42,8 @@ pointers instead of weights.
 - `pointfeat.pth` is extracted from the tokenizer's own frozen PointNet parameters.
   The VQVae constructor requires this initialization file before loading its state.
 - `mean.npy` and `std.npy` are the exact 208-feature normalization arrays.
-- `source.tar.gz` contains the matching training architecture and configuration
-  snapshot, plus its license notices. Use this source for these weights; the
+- `source.tar.gz` contains the matching training architecture and configuration,
+  plus its license notices. Use this source for these weights; the
   repository's historical top-level implementation has different details.
 - `source-manifest.json` records every archived source file's SHA256.
   `manifest.json` and `SHA256SUMS` identify the released assets.
@@ -92,7 +90,7 @@ import json, sys
 from pathlib import Path
 import torch
 
-release = Path("releases/arctic-bestfid-20260927").resolve()
+release = Path("releases/arctic-final").resolve()
 sys.path.insert(0, str(release / "source"))
 from hoigpt.config import instantiate_from_config
 

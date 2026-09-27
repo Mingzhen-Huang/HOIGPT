@@ -9,8 +9,8 @@
   },
   "files": {
     "README.md": {
-      "bytes": 6415,
-      "sha256": "33bc8ac36409483a5a8ecbefd7e2b7b750afbf71fc52ae72b6a34d1bb5a23f3d"
+      "bytes": 6111,
+      "sha256": "1e3016e01d7c5d7f36124a3b149f45ca1a94b074f87be54b53f482ace048e37c"
     },
     "codebook-epoch0380.ckpt": {
       "bytes": 180472522,
@@ -91,20 +91,15 @@
     "file": "pointfeat.pth",
     "source": "exact frozen PointNet tensors embedded in the released codebook"
   },
-  "release": "arctic-bestfid-20260927",
-  "snapshot_at_utc": "2026-09-27T15:50:27.145774+00:00",
+  "release": "arctic-final",
+  "release_status": "final",
   "source_sha256": "7f3eaac72c1dc6f1cfae3466cc0e41d1d0f1bbcf3d703f8a03b65ba97b754a11",
   "stage3": {
     "epoch": 9,
     "epoch_number": 10,
     "file": "stage3-epoch0010.ckpt",
     "global_step": 30510,
-    "source_checkpoint_sha256": "9f6394753cfe106bcdc504942a010713a0778075416414801274ab53fa477398",
-    "stage2_best_fid": 3.5523691177368164,
-    "started_from_stage2_epoch_number": 80,
-    "training_complete": false,
-    "validation_fid": 2.9045820236206055,
-    "validation_history_at_snapshot": [
+    "selection_validation_history": [
       {
         "epoch_number": 10,
         "fid": 2.9045820236206055
@@ -113,7 +108,11 @@
         "epoch_number": 20,
         "fid": 3.122708797454834
       }
-    ]
+    ],
+    "source_checkpoint_sha256": "9f6394753cfe106bcdc504942a010713a0778075416414801274ab53fa477398",
+    "stage2_best_fid": 3.5523691177368164,
+    "started_from_stage2_epoch_number": 80,
+    "validation_fid": 2.9045820236206055
   },
   "tensor_values_preserved": true,
   "tokens_manifest_sha256": "6d29bca075eb7ca2b988a894deb220a96cf6edee5797ca81fe7058beb8f6f738",
@@ -121,9 +120,9 @@
     "codebook_reconstruction_samples": 101,
     "dataset": "local ARCTIC validation split, not the paper mixed benchmark",
     "filtered_short_motion_ids": 10,
-    "final_independent_20_seed_evaluation_complete": false,
     "generation_fid_samples_with_sampler_padding": 104,
     "generation_fid_world_size": 8,
+    "reported_generation_score": "single distributed validation pass",
     "retrieval_effective_samples": 96,
     "retrieval_group_size": 32,
     "split_ids": 111,

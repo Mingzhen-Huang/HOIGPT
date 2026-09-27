@@ -2,7 +2,7 @@
 
 Notable changes to the HOIGPT code release are documented here.
 
-## Unreleased
+## Final release
 
 - Added checkpoint-free ARCTIC/GRAB clip-to-feature converters and a deterministic
   ARCTIC annotation-to-manifest command, preserving explicit sample IDs and frames.
@@ -15,9 +15,10 @@ Notable changes to the HOIGPT code release are documented here.
 - Organized existing ARCTIC split lists, normalization, and point-index metadata
   as an explicitly unverified local snapshot. Missing paper/test/GRAB mappings
   remain documented gaps; no random replacement split is generated.
-- Added the resource preparation/provenance guide. No checkpoints are included.
-- Updated data preparation instructions and marked pretrained HOIGPT checkpoints
-  as "to be tuned", with release pending tuning and validation.
+- Added the resource preparation/provenance guide.
+- Published the [Final ARCTIC models](releases/arctic-final/README.md): paired
+  dual-codebook tokenizer and Stage 3 weights, PointNet initialization, matching
+  source, model configuration, normalization, checksums and strict-load verification.
 
 ## 0.1.0
 

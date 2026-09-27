@@ -1,10 +1,11 @@
 # Data resources and preprocessing
 
-This resource update does **not** include any checkpoint. Its purpose is to make
-the available data-preparation code and metadata explicit, without substituting
-new splits or incompatible weights for the paper's resources.
+This guide documents the available data-preparation code and metadata. The
+[Final ARCTIC models](../releases/arctic-final/README.md) provide the paired
+dual-codebook tokenizer and Stage 3 language-model weights, with matching source,
+normalization, configuration and verification records.
 
-## Available and pending
+## Resource overview
 
 | Resource | Included now | Important limitation |
 | --- | --- | --- |
@@ -16,8 +17,8 @@ new splits or incompatible weights for the paper's resources.
 | ARCTIC split metadata | Existing 5,423 train / 111 val IDs | Local snapshot, not certified paper splits; no test file exists here |
 | Object conditioning resources | Mesh-to-cache builder and existing ARCTIC point indices | Licensed meshes/part labels must match checksums; rebuilt normals differ from the old cache |
 | GRAB split metadata | Not yet available | No generated replacement split is presented as official |
-| Stage 1 tokenizer / Stage 3 language-model checkpoints | To be tuned | Not included; release pending tuning and validation |
-| PointNet / text-motion evaluator weights | Pending release | Must be verified against the same data and model configuration |
+| Stage 1 tokenizer / Stage 3 language-model checkpoints | [Final models](../releases/arctic-final/README.md) through Git LFS | Use the paired codebook, vocabulary and archived source |
+| PointNet / text-motion evaluator weights | PointNet initialization file and evaluator state embedded in Stage 3 | Full evaluation requires the matching data and evaluator configuration |
 
 These tools do not require a trained model or CUDA to extract the pose features.
 They do not vendor MANO assets or raw dataset files. Obtain data under the relevant
@@ -244,17 +245,16 @@ dataset root; no mesh files are copied or distributed by this command.
 - Object point coordinates were checked as described above; normal parity is
   explicitly unresolved.
 
-## Checkpoints: to be tuned
+## Final model checkpoints
 
-Pretrained Stage 1 tokenizer and Stage 3 language-model checkpoints are **to be
-tuned**. Their release is pending tuning and validation; no checkpoint download
-links are available yet. Matching PointNet and text-motion evaluator weights are
-also pending release.
+Download the [Final ARCTIC models](../releases/arctic-final/README.md) with Git LFS.
+The release includes the dual-codebook tokenizer, Stage 3 language model,
+PointNet initialization file, normalization arrays, matching source and loading
+verification. Its SHA256 manifest identifies the exact paired weights.
 
-No tokenizer, language-model, evaluator, or PointNet weights are added by this
-resource update. Before offering them as a baseline, verify the raw-ID manifest,
-split, normalization, point selection, tokenizer architecture/token vocabulary,
-Stage 3 weights, evaluator version, and evaluation protocol together. Old
-single-codebook checkpoints are not interchangeable with current structured
-two-codebook configs. Do not substitute the later retrained evaluator for the
-paper evaluator without clearly labeling the protocol change.
+The published metrics use the documented local ARCTIC validation protocol. Keep
+the split, normalization, object point selection, tokenizer architecture and
+vocabulary, Stage 3 weights, and evaluator configuration consistent. Evaluator
+parameters are preserved as `metrics.*` in the Stage 3 checkpoint; the full
+evaluation entry point also needs the matching evaluator file and prepared data.
+Old single-codebook checkpoints are not interchangeable with this release.

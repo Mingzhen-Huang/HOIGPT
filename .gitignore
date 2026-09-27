@@ -79,8 +79,8 @@
 build/
 dist/
 
-# Explicitly published, versioned model snapshot.
+# Explicitly published Final model release.
 !/.gitattributes
 !/releases/
-!/releases/arctic-bestfid-20260927/
-!/releases/arctic-bestfid-20260927/**
+!/releases/arctic-final/
+!/releases/arctic-final/**

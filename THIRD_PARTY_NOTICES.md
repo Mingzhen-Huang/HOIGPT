@@ -110,7 +110,7 @@ imports it; this distribution does not vendor the SMPL-X/MANO implementation
 or the MANO model files. Users must obtain the model files and accept their
 applicable terms independently.
 
-The versioned [ARCTIC model release](releases/arctic-bestfid-20260927/README.md)
+The [Final ARCTIC model release](releases/arctic-final/README.md)
 includes trained HOIGPT tokenizer and Stage 3 weights, an embedded evaluator,
 and a PointNet initialization checkpoint extracted from the tokenizer. The
 Stage 3 language-model parameters are derived from
