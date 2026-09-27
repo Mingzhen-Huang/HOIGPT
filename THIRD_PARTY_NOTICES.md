@@ -103,7 +103,7 @@ The full notice is in
 The applicable notice is in
 [`LICENSES/BSD-3-Clause-Ceres.txt`](LICENSES/BSD-3-Clause-Ceres.txt).
 
-## External dependencies and excluded assets
+## External dependencies and asset requirements
 
 The `smplx` implementation is an external dependency. The HOIGPT MANO wrapper
 imports it; this distribution does not vendor the SMPL-X/MANO implementation
@@ -118,7 +118,7 @@ Stage 3 language-model parameters are derived from
 specifies Apache License 2.0; the license text is included in
 [LICENSES/Apache-2.0.txt](LICENSES/Apache-2.0.txt). The release expands the
 vocabulary and fine-tunes those weights for HOI pretraining and instruction tuning.
-The original base-model files and tokenizer assets must still be obtained separately.
+Obtain the original base-model files and tokenizer assets separately.
 
 Raw datasets, MANO model files, GloVe and full training-resume outputs are not
 included. Obtain external assets independently under their respective terms.

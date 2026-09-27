@@ -9,16 +9,16 @@
   },
   "files": {
     "README.md": {
-      "bytes": 6111,
-      "sha256": "1e3016e01d7c5d7f36124a3b149f45ca1a94b074f87be54b53f482ace048e37c"
+      "bytes": 6199,
+      "sha256": "99d17d223611e1fc4b8d945146d521db42d585744c5626710877a70602da32a4"
     },
     "codebook-epoch0380.ckpt": {
       "bytes": 180472522,
       "sha256": "2bab59bfd812a0830193fb3943fb5997ad87c11566fdd664e8ade3f5f372afbf"
     },
     "codebook-recipe.json": {
-      "bytes": 1211,
-      "sha256": "41580fa461314eba844fa3b845b74ce61f529d1ad64a55a9b2ea3e5c4e443734"
+      "bytes": 1160,
+      "sha256": "6240d0112b61063aef877fca5c61a9b20d8ca6b6ef03f336a9dd71739ae72eae"
     },
     "environment.json": {
       "bytes": 417,

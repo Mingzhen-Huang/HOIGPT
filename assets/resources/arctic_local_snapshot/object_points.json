@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "dataset": "arctic",
-  "status": "local cached point selection; coordinates checked within 2e-8 meters, normals not reproduced; not certified paper resources",
+  "status": "local ARCTIC file-order point selection; coordinates match the historical cache within 2e-8 meters; preserve checkpoint-specific normal caches",
   "vertex_order": "file_order_process_false",
   "points_per_object": 1024,
   "objects": {

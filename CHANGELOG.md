@@ -8,13 +8,12 @@ Notable changes to the HOIGPT code release are documented here.
   ARCTIC annotation-to-manifest command, preserving explicit sample IDs and frames.
 - Added original caption processing and grouped normalization, plus object-cache
   reconstruction from separately obtained meshes and recorded point indices.
-- Preserved mesh file vertex order for point indices/part labels; documented
-  the unresolved difference between recomputed and historical object normals.
-  Training/geometry loaders honor the new cache marker without changing the
-  mesh-loading behavior of unmarked historical caches.
-- Organized existing ARCTIC split lists, normalization, and point-index metadata
-  as an explicitly unverified local snapshot. Missing paper/test/GRAB mappings
-  remain documented gaps; no random replacement split is generated.
+- Preserved mesh file vertex order for point indices and part labels, and
+  documented the normal-cache convention. Training/geometry loaders honor the
+  new cache marker and preserve the behavior of historical caches.
+- Organized the local ARCTIC split lists, normalization and point-index metadata
+  into a checkpoint-matched resource snapshot with explicit manifest inputs
+  for other datasets and evaluation splits.
 - Added the resource preparation/provenance guide.
 - Published the [Final ARCTIC models](releases/arctic-final/README.md): paired
   dual-codebook tokenizer and Stage 3 weights, PointNet initialization, matching

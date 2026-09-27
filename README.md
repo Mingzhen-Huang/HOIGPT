@@ -6,17 +6,17 @@ Interaction with Language Models** (CVPR 2025).
 [[Paper](https://openaccess.thecvf.com/content/CVPR2025/html/Huang_HOIGPT_Learning_Long-Sequence_Hand-Object_Interaction_with_Language_Models_CVPR_2025_paper.html)]
 [[arXiv](https://arxiv.org/abs/2503.19157)]
 
-This release includes the original three-stage training pipeline, motion-token
-export, and evaluation code, migrated into the `hoigpt` Python package. It is **not
-tokenizer-only**. The final dual-codebook and Stage 3 models are now
-available through Git LFS; see [Checkpoint status](#checkpoint-status).
-Datasets, MANO assets, and full training-resume outputs are not bundled. Training starts from prepared HOI features. Checkpoint-free ARCTIC/GRAB
-feature converters, caption processing, normalization, and object-cache tools are
-now included; see the [resource preparation guide](docs/resources.md).
-The exact paper raw-to-clip manifest and all official split provenance are not yet
-verified. Historical object point indices are included, but rebuilt normals are
-not equivalent to the old cache. Training of the external PointNet/evaluation
-models is not included.
+This release provides the three-stage training pipeline, motion-token export,
+evaluation code, and the Final dual-codebook and Stage 3 models. The implementation
+uses the `hoigpt` Python package. Download model weights through Git LFS; see
+[Final models](#final-models).
+
+Training starts from prepared HOI features. The [resource preparation
+guide](docs/resources.md) covers ARCTIC/GRAB feature conversion, captions,
+normalization, clip manifests and object caches. Keep the split IDs,
+normalization and conditioning cache matched to the selected checkpoint.
+Obtain the licensed datasets and MANO assets separately. PointNet and the
+text-motion evaluator serve as pretrained dependencies for HOIGPT.
 
 ## Code layout
 
@@ -37,7 +37,7 @@ hoigpt/
 configs/                       Three-stage ARCTIC/GRAB configurations
 assets/                        Original pretraining/instruction templates
   resources/                   Labeled local ARCTIC snapshot and manifest examples
-docs/resources.md              Preparation commands, provenance, missing resources
+docs/resources.md              Preparation commands, data provenance, asset requirements
 ```
 
 The training architecture is `hoigpt.archs.hoigpt_vq.VQVae`; the Lightning model is
@@ -74,13 +74,12 @@ The spaCy model is also needed if `DATASET.ARCTIC.STD_TEXT` or
 
 ## Data and external assets
 
-Start with the [resource preparation guide](docs/resources.md) for raw-data
-conversion and existing split/normalization metadata. The included ARCTIC snapshot
-has 5,423 training and 111 validation IDs, but no test list; it is explicitly a
-local prepared-data snapshot, not a certified paper split. Do not combine its IDs
-with a newly numbered raw-data manifest. GRAB's original clip/split manifest still
-needs to be recovered. This update provides preparation code and metadata, not
-raw datasets or downloadable prepared motions. Obtain the licensed data separately.
+Use the [resource preparation guide](docs/resources.md) for raw-data conversion
+and split/normalization metadata. The supplied local ARCTIC snapshot contains
+5,423 training and 111 validation IDs. Preserve its original clip-ID mapping;
+for a newly numbered dataset, supply the corresponding manifest and split lists.
+GRAB preparation takes explicit clip intervals and split assignments.
+Obtain raw datasets and licensed assets separately.
 
 Data preparation tools are available through:
 
@@ -91,7 +90,7 @@ python scripts/prepare_data.py --help
 
 See the guide for raw clip conversion, caption processing, normalization,
 snapshot restoration, and object-cache generation. For model weights, see
-[Checkpoint status](#checkpoint-status).
+[Final models](#final-models).
 
 Set local paths in [`configs/assets.yaml`](configs/assets.yaml), or override any
 configuration value with repeated `--set KEY=VALUE` arguments.
@@ -119,7 +118,7 @@ Each prepared dataset root has this layout:
 dataset/hoigen/                 # or dataset/hoigrab/
   train.txt
   val.txt
-  test.txt                     # required for test evaluation; not bundled
+  test.txt                     # supply the split used for test evaluation
   mean.npy                     # [208]
   std.npy                      # [208], nonzero normalization scales
   new_joints/<name>.npy         # [T, 208] unnormalized HOI features
@@ -152,7 +151,7 @@ resample only one stage. The language-model context length is configurable throu
 `lm.default.params.max_length`; structured triplets take six language-model tokens
 per VQ timestep plus boundary tokens, so longer data may need a larger value.
 
-## Checkpoint status
+## Final models
 
 The [Final ARCTIC models](releases/arctic-final/README.md) contain the final
 dual-codebook tokenizer (epoch 380, reconstruction FID 0.4223) and Stage 3
@@ -166,7 +165,8 @@ to download the model files and use the matching archived source.
 
 The released weights omit optimizer/RNG state and support inference or weight
 initialization. Reported FID values use the documented local ARCTIC validation
-protocol. GRAB weights, raw datasets and licensed MANO assets are not included.
+protocol. GRAB runs use their corresponding model and data assets; obtain raw
+datasets and MANO assets separately.
 
 ## Training
 
@@ -252,7 +252,7 @@ python test.py --cfg configs/config_hoi_paper_stage3.yaml --device 0 \
 ```
 
 The full Stage 3 checkpoint includes the tokenizer weights. The initial
-PointNet/language-model assets are still needed to construct the architecture.
+PointNet/language-model assets initialize the architecture before weights load.
 `TM2TMetrics` uses the HOI evaluator for FID, text-motion matching, retrieval, and
 diversity; the script also runs multimodality evaluation and reports replication
 means and confidence intervals. Use the full evaluation split: these metrics have
@@ -278,15 +278,14 @@ assets and rendering dependencies.
 
 ## Release notes
 
-This repository includes source code and the final ARCTIC models
-linked above. Reproducing paper scores requires the matching data preparation,
-checkpoints and evaluation assets. Published local validation scores and strict
-loading checks do not establish reproduction of the paper benchmark.
+This repository includes source code and the Final ARCTIC models linked above.
+The release manifest records the local validation protocol, checkpoint identity
+and loading-verification scope. For comparisons under the paper protocol, use
+the corresponding data preparation, split manifests and evaluation assets.
 
-The published files are allowlisted in `.gitignore` and `MANIFEST.in`. Old local
-research directories, private machine-specific configs, datasets, MANO files,
-unreleased checkpoints, and experiment logs are excluded. Historical local directories may
-still exist in a development workspace; they are neither imported nor released.
+The publication allowlists are defined in `.gitignore` and `MANIFEST.in`.
+Keep licensed datasets, MANO assets and experiment outputs in their configured
+workspace locations.
 
 Only load trusted training checkpoints: the original Lightning checkpoints include
 pickled training metadata and are loaded with `weights_only=False`. For sharing

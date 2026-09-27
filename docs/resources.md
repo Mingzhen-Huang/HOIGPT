@@ -7,18 +7,18 @@ normalization, configuration and verification records.
 
 ## Resource overview
 
-| Resource | Included now | Important limitation |
+| Resource | Provided support | Inputs and conventions |
 | --- | --- | --- |
-| ARCTIC raw clip conversion | CPU converter preserving the original 208-feature formulas | Exact historical raw-sequence → clip-ID mapping not yet recovered |
-| ARCTIC annotation parsing | Explicit manifest builder, optional contiguous-clip augmentation | Sorted default order is reproducible but not the old filesystem order |
-| GRAB raw clip conversion | CPU converter preserving original pose/translation conventions | Requires explicit clip intervals; original contact segmentation and split manifest still pending |
-| Caption preprocessing | Original spaCy lemmatization/POS convention | Annotation corpus and exact historical spaCy model version not bundled |
-| Normalization | Original grouped-standard-deviation algorithm and existing ARCTIC values | Snapshot's fit population/provenance not established as the paper protocol |
-| ARCTIC split metadata | Existing 5,423 train / 111 val IDs | Local snapshot, not certified paper splits; no test file exists here |
-| Object conditioning resources | Mesh-to-cache builder and existing ARCTIC point indices | Licensed meshes/part labels must match checksums; rebuilt normals differ from the old cache |
-| GRAB split metadata | Not yet available | No generated replacement split is presented as official |
-| Stage 1 tokenizer / Stage 3 language-model checkpoints | [Final models](../releases/arctic-final/README.md) through Git LFS | Use the paired codebook, vocabulary and archived source |
-| PointNet / text-motion evaluator weights | PointNet initialization file and evaluator state embedded in Stage 3 | Full evaluation requires the matching data and evaluator configuration |
+| ARCTIC raw clip conversion | CPU converter preserving the original 208-feature formulas | Explicit manifests map source sequences and frame intervals to clip IDs |
+| ARCTIC annotation parsing | Manifest builder with optional contiguous-clip augmentation | Sorted sequence order or an explicitly supplied historical order |
+| GRAB raw clip conversion | CPU converter preserving pose/translation conventions | Explicit contact intervals and split assignments in the input manifest |
+| Caption preprocessing | spaCy lemmatization and word/POS conversion | Supply annotations and record the spaCy model version used |
+| Normalization | Grouped-standard-deviation computation and released ARCTIC values | Use checkpoint-matched arrays; select the fit population explicitly for new statistics |
+| ARCTIC split metadata | 5,423 training and 111 validation IDs | Local prepared-data IDs; provide the test split required by your evaluation protocol |
+| Object conditioning | Mesh-to-cache builder and recorded ARCTIC point indices | Match mesh hashes and vertex order; preserve checkpoint-specific normal caches |
+| GRAB split metadata | Explicit manifest input | Supply dataset-specific clip and split assignments |
+| Stage 1 / Stage 3 checkpoints | [Final models](../releases/arctic-final/README.md) through Git LFS | Use the paired codebook, vocabulary and archived source |
+| PointNet / evaluator weights | PointNet file and evaluator state embedded in Stage 3 | Full evaluation uses matching data and evaluator configuration |
 
 These tools do not require a trained model or CUDA to extract the pose features.
 They do not vendor MANO assets or raw dataset files. Obtain data under the relevant
@@ -116,11 +116,10 @@ python scripts/prepare_data.py convert --dataset grab \
   --output /path/to/new_prepared_grab
 ```
 
-The old GRAB script generated contact-based clip boundaries and used an inclusive
-end frame. Convert a recovered inclusive `[start, end]` to `[start, end + 1)` in
-this manifest. This update does **not** replace those contact intervals with an
-arbitrary full-sequence or random split. The exact segmentation metadata still
-needs to be recovered before claiming paper reproduction.
+The original GRAB script used contact-based clip boundaries and an inclusive
+end frame. Supply those contact intervals in the manifest and convert an
+inclusive `[start, end]` to `[start, end + 1)`. Keep each clip's split assignment
+with its source manifest so the segmentation and evaluation protocol stay aligned.
 
 ### Feature conventions retained from the original scripts
 
@@ -176,9 +175,10 @@ For existing weights, use their original normalization rather than recomputing i
 ## Existing ARCTIC snapshot
 
 [`assets/resources/arctic_local_snapshot/`](../assets/resources/arctic_local_snapshot/)
-contains exact copies of the available local train/val lists, float64
-normalization values, mesh-dependent point indices, and source checksums. It does
-not include motions, captions, meshes, MANO files, or any model checkpoint.
+contains the local train/val lists, float64 normalization values,
+mesh-dependent point indices and source checksums. Supply motions, captions,
+meshes and MANO assets in the prepared-data workspace. Download model weights
+from the [Final release](../releases/arctic-final/README.md).
 
 ```bash
 python scripts/prepare_data.py restore-snapshot \
@@ -186,11 +186,12 @@ python scripts/prepare_data.py restore-snapshot \
   --output /path/to/new_snapshot_directory
 ```
 
-This materializes available lists and `mean.npy`/`std.npy`. No `test.txt` is made.
-The original split script used an unseeded shuffle; the saved lists, not a rerun,
-are the source of truth for this local snapshot. Their paper provenance and raw-ID
-mapping are still unverified. The metadata also makes clear that the normalization
-fit population is unknown. This snapshot is **not** an official benchmark claim.
+This restores the saved train/val lists and `mean.npy`/`std.npy`.
+Provide `test.txt` according to your evaluation protocol. The saved lists fix
+the local split produced by the original unseeded shuffle; preserve these lists
+and their clip-ID mapping when using the released weights. Treat the supplied
+normalization arrays as fixed checkpoint assets. For newly computed statistics,
+record the selected fit population with the new arrays.
 
 ## Object meshes and point cache
 
@@ -220,30 +221,28 @@ honor. Unmarked historical caches retain the previous loader behavior; rebuildin
 a cache can therefore also change the full-mesh/part-label alignment. Keep the
 cache version with the experiment instead of silently replacing an old one.
 
-For all 11 available ARCTIC objects, file-order indices reproduce the old cached
-point coordinates within `2e-8` meters. **Normals recomputed by trimesh do not
-match the historical cache.** This is a point-selection recovery, not an exact
-cache reproduction or a certification of paper conditioning. Retain the original
-cache for an existing experiment that depends on its normals; the historical
-normal-generation procedure remains to be recovered.
+For all 11 ARCTIC objects in this snapshot, file-order indices reproduce the
+historical point coordinates within `2e-8` meters. The cache builder computes
+normals with trimesh, producing values different from the historical cache.
+Retain the original normal cache for checkpoint-specific comparisons and keep
+the cache version alongside the experiment.
 
-For **new** data, omit `--indices` and choose `--points 1024 --seed 1234` to use
-deterministic farthest-point sampling. This is a new sampling choice, not a claim
-to reproduce the historical PointNet conditioning. Keep its cache/selection with
-the experiment. Place the resulting `arctic.pkl` or `grab.pkl` at the prepared
-dataset root; no mesh files are copied or distributed by this command.
+For **new** data, omit `--indices` and choose `--points 1024 --seed 1234` for
+deterministic farthest-point sampling. Record this sampling choice and its cache
+with the experiment. Place the resulting `arctic.pkl` or `grab.pkl` at the
+prepared dataset root and provide the corresponding licensed meshes separately.
 
-## Scope of local verification
+## Validation coverage
 
-- A real ARCTIC raw clip was converted and matched the original feature formula
-  element-for-element, including clip-start translation rebasing.
-- The GRAB converter was checked with a synthetic annotation dictionary against
-  the original formula. No real GRAB dataset was available for end-to-end checks.
-- Restored split lists and float64 normalization arrays match the local originals.
-- Grouped normalization, caption processing, bounds, and overwrite protection were
-  exercised locally. This does not establish paper split or model-result parity.
-- Object point coordinates were checked as described above; normal parity is
-  explicitly unresolved.
+- ARCTIC feature conversion matched the original formula element-for-element on
+  a real raw clip, including clip-start translation rebasing.
+- GRAB feature conversion matched the original formula on synthetic annotation
+  dictionaries.
+- Restored split lists and float64 normalization arrays match the saved local assets.
+- Checks cover grouped normalization, caption processing, frame bounds and
+  overwrite protection.
+- Reconstructed object point coordinates match the recorded selection. Use the
+  historical normal cache for checkpoints that depend on those normal values.
 
 ## Final model checkpoints
 

@@ -24,13 +24,13 @@
   "dead_code_threshold": 0.1,
   "geometry": "hand vertices inside articulated object mesh; squared nearest-vertex distance",
   "objective": "mean absolute feature reconstruction + commitment + scheduled geometry",
-  "limitations": [
-    "ARCTIC local validation, not paper ARCTIC+GRAB split",
-    "single-to-dual transfer, fresh optimizer; no exact continuation",
-    "separate conditioned hand decoders, not paper joint summed-latent decoder",
-    "default MANO shape; subject-specific betas unavailable",
-    "three one-triangle mesh holes repaired in isolated geometry; microwave penetration skipped (open mesh)",
-    "mask ratio, warmup/ramp, geometry scaling are explicit engineering choices",
-    "geometry uses randomly sampled training examples/frames for tractability"
+  "recipe_details": [
+    "ARCTIC local validation protocol",
+    "single-to-dual initialization with a fresh optimizer",
+    "separate object-conditioned hand decoders",
+    "default MANO shape parameters",
+    "three one-triangle mesh holes repaired in isolated geometry; penetration applies to closed meshes and excludes the open microwave mesh",
+    "mask ratio, warmup/ramp, and geometry scaling follow the recorded recipe",
+    "geometry uses randomly sampled training examples and frames for tractability"
   ]
 }

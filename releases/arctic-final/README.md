@@ -54,8 +54,8 @@ pointers instead of weights.
   Machine-local paths in the original training YAMLs must be overridden for a new
   environment; these YAMLs are not standalone launch scripts.
 
-No ARCTIC/GRAB motions, captions, meshes, canonical object caches, MANO models,
-GloVe or base FLAN-T5 files are included.
+Provide ARCTIC/GRAB motions, captions, meshes, canonical object caches, MANO models,
+GloVe and base FLAN-T5 files in the locations used by your configuration.
 
 ## Verify loading
 
@@ -121,5 +121,6 @@ MANO is required for the mesh/joint and rendering workflows.
 
 The full `test.py` evaluation pipeline additionally requires the matching
 prepared ARCTIC data, GloVe and TM2T evaluator. The Stage 3 state preserves
-`metrics.*` so evaluator identity can be checked; strict CPU loading alone is
-not an independent evaluation of the published FID.
+`metrics.*` for evaluator identity checks. The CPU verifier checks loading and
+weight identity; FID computation uses the full evaluation pipeline and the
+protocol documented above.

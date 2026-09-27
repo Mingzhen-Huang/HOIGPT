@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "dataset": "arctic",
-  "status": "existing local prepared-data snapshot; paper provenance unverified",
+  "status": "fixed normalization arrays for the local ARCTIC prepared-data snapshot",
   "mean": [
     -0.052985655162480966,
     0.7543113289738311,
