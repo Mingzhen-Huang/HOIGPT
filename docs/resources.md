@@ -14,7 +14,7 @@ normalization, configuration and verification records.
 | GRAB raw clip conversion | CPU converter preserving pose/translation conventions | Explicit contact intervals and split assignments in the input manifest |
 | Caption preprocessing | spaCy lemmatization and word/POS conversion | Supply annotations and record the spaCy model version used |
 | Normalization | Grouped-standard-deviation computation and released ARCTIC values | Use checkpoint-matched arrays; select the fit population explicitly for new statistics |
-| ARCTIC split metadata | 5,423 training and 111 validation IDs | Local prepared-data IDs; provide the test split required by your evaluation protocol |
+| ARCTIC split metadata | 5,423 train / 111 val IDs and [recovered clip map](../assets/resources/arctic_local_snapshot/arctic_clips.json) | Each released ID maps to its original source sequence and zero-based `[start, end)` frames; supply any test split separately |
 | Object conditioning | Mesh-to-cache builder and recorded ARCTIC point indices | Match mesh hashes and vertex order; preserve checkpoint-specific normal caches |
 | GRAB split metadata | Explicit manifest input | Supply dataset-specific clip and split assignments |
 | Stage 1 / Stage 3 checkpoints | [Final models](../releases/arctic-final/README.md) through Git LFS | Use the paired codebook, vocabulary and archived source |
@@ -175,10 +175,11 @@ For existing weights, use their original normalization rather than recomputing i
 ## Existing ARCTIC snapshot
 
 [`assets/resources/arctic_local_snapshot/`](../assets/resources/arctic_local_snapshot/)
-contains the local train/val lists, float64 normalization values,
-mesh-dependent point indices and source checksums. Supply motions, captions,
-meshes and MANO assets in the prepared-data workspace. Download model weights
-from the [Final release](../releases/arctic-final/README.md).
+contains the exact local train/val lists, their [recovered legacy clip
+mapping](../assets/resources/arctic_local_snapshot/arctic_clips.json), float64
+normalization values, mesh-dependent point indices and source checksums. Supply
+raw motions, meshes and MANO assets in the prepared-data workspace. Download
+model weights from the [Final release](../releases/arctic-final/README.md).
 
 ```bash
 python scripts/prepare_data.py restore-snapshot \
@@ -186,12 +187,53 @@ python scripts/prepare_data.py restore-snapshot \
   --output /path/to/new_snapshot_directory
 ```
 
-This restores the saved train/val lists and `mean.npy`/`std.npy`.
+This restores the saved train/val lists, `mean.npy`/`std.npy` and the clip map.
 Provide `test.txt` according to your evaluation protocol. The saved lists fix
-the local split produced by the original unseeded shuffle; preserve these lists
-and their clip-ID mapping when using the released weights. Treat the supplied
+the local split produced by the original unseeded shuffle. Treat the supplied
 normalization arrays as fixed checkpoint assets. For newly computed statistics,
 record the selected fit population with the new arrays.
+
+### Recovered legacy clip IDs
+
+[`arctic_clips.json`](../assets/resources/arctic_local_snapshot/arctic_clips.json)
+contains all 5,534 IDs in the released train/val lists. Each record gives the
+original `sXX/sequence`, zero-based `[start, end)` raw-frame interval,
+split, saved-feature SHA256 and caption SHA256. Its `split_ids` retain the
+exact order of the released train/val files; `source_order_recovered_from_clip_ids` lists the 274
+sequences that contributed released clips. This is a **recovered, verified map**,
+not a preserved copy of an original manifest file. All records uniquely matched
+raw ARCTIC frames and historical caption digests. Reconstructing the complete 208-D
+features gave maximum absolute error `6.812803508005061e-7` across the released
+clips. The saved split-file SHA256 values are embedded in the map.
+
+Use this map when converting the original ARCTIC raw annotations; generating a
+new sorted manifest assigns different numeric IDs:
+
+```bash
+python scripts/prepare_data.py convert --dataset arctic \
+  --raw-root /path/to/arctic/data/arctic_data/data/raw_seqs \
+  --descriptions /path/to/arctic/description \
+  --manifest assets/resources/arctic_local_snapshot/arctic_clips.json \
+  --output /path/to/new_prepared_hoigen
+```
+
+The converter now preserves the released train/val ID order. It rebuilds raw
+captions from your local ARCTIC descriptions, using the digest to disambiguate
+clips with the same frame interval. The public map does not include ARCTIC
+annotation text. Use the caption-tokenization command with a recorded
+spaCy version for processed `texts/`, and restore the checkpoint-matched normalization
+separately. To verify the map against existing prepared motions and trusted raw
+annotations:
+
+```bash
+python scripts/verify_arctic_clips.py \
+  --prepared-root /path/to/existing_hoigen \
+  --raw-root /path/to/arctic/data/arctic_data/data/raw_seqs
+```
+
+The verifier checks split order/hashes, saved feature hashes, caption
+digests and every reconstructed feature. Raw ARCTIC data and MANO assets remain subject to their
+own access terms.
 
 ## Object meshes and point cache
 

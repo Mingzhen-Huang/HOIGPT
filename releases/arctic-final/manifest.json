@@ -9,8 +9,8 @@
   },
   "files": {
     "README.md": {
-      "bytes": 6199,
-      "sha256": "99d17d223611e1fc4b8d945146d521db42d585744c5626710877a70602da32a4"
+      "bytes": 6360,
+      "sha256": "bd041c93717538e85d09c5f89bf073ca07034b8b328f470800ae04c4b1918739"
     },
     "codebook-epoch0380.ckpt": {
       "bytes": 180472522,
@@ -127,5 +127,14 @@
     "retrieval_group_size": 32,
     "split_ids": 111,
     "unique_evaluated_ids": 101
+  },
+  "dataset_mapping": {
+    "file": "assets/resources/arctic_local_snapshot/arctic_clips.json",
+    "sha256": "78167a7a1839f449075b3da82221ab489e7018715fc146f279f4c730bd5cf108",
+    "split_sha256": {
+      "train": "6e00e55d7ef07d143f4d79ead7cdf4c27e6a686d042646c6374738b80d21755b",
+      "val": "e2970465cf64527d0a64d72f63412132a3accf6b2641f537ec062abb1ee0a080"
+    },
+    "verified_clip_count": 5534
   }
 }

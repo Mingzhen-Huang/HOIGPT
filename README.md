@@ -75,9 +75,11 @@ The spaCy model is also needed if `DATASET.ARCTIC.STD_TEXT` or
 ## Data and external assets
 
 Use the [resource preparation guide](docs/resources.md) for raw-data conversion
-and split/normalization metadata. The supplied local ARCTIC snapshot contains
-5,423 training and 111 validation IDs. Preserve its original clip-ID mapping;
-for a newly numbered dataset, supply the corresponding manifest and split lists.
+and split/normalization metadata. The supplied local ARCTIC snapshot contains 5,423 training and 111 validation
+IDs. Its [recovered clip mapping](assets/resources/arctic_local_snapshot/arctic_clips.json)
+links every released ID to the original ARCTIC sequence and frame interval.
+Use this mapping with the supplied split files; a newly numbered dataset needs
+its own matching manifest and splits.
 GRAB preparation takes explicit clip intervals and split assignments.
 Obtain raw datasets and licensed assets separately.
 

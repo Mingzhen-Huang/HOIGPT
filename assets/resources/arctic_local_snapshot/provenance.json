@@ -7,7 +7,7 @@
     "val": 111
   },
   "test_split": "supply the test split required by the evaluation protocol",
-  "raw_id_mapping": "requires a source manifest whose clip IDs match the saved split lists",
+  "raw_id_mapping": "arctic_clips.json: recovered legacy IDs aligned to the saved train/val lists and raw ARCTIC frames",
   "normalization_fit_population": null,
   "object_points": "file-order indices checked for 11 meshes within 2e-8 meters; recomputed normals differ from the historical cache",
   "files": {
@@ -25,6 +25,9 @@
     },
     "std.npy": {
       "sha256": "96a13e56b6cb75078e29d40cf0eb1587be1c1c2f5ea78e0f45cbbf5884125019"
+    },
+    "arctic_clips.json": {
+      "sha256": "78167a7a1839f449075b3da82221ab489e7018715fc146f279f4c730bd5cf108"
     }
   },
   "normalization_source": "fixed arrays copied from the existing local prepared-data directory; the original fitting population was not recorded; the original statistics script used all feature files"

@@ -13,7 +13,9 @@ Both models use the same tokenizer parameters. Reconstruction and generation FID
 measure different tasks. These scores use the local ARCTIC validation protocol:
 111 split IDs, 101 unique examples after the motion-length filter, and 104 FID
 samples after eight-rank sampler padding. Retrieval metrics use 96 examples in
-groups of 32. Codebook reconstruction FID uses 101 examples.
+groups of 32. Codebook reconstruction FID uses 101 examples. The matching
+[ARCTIC clip map](../../assets/resources/arctic_local_snapshot/arctic_clips.json)
+links all released train/val IDs to their original source frames.
 
 ## Download
 

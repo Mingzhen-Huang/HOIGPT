@@ -14,6 +14,9 @@ Notable changes to the HOIGPT code release are documented here.
 - Organized the local ARCTIC split lists, normalization and point-index metadata
   into a checkpoint-matched resource snapshot with explicit manifest inputs
   for other datasets and evaluation splits.
+- Recovered the exact legacy ARCTIC clip-ID to raw-sequence/frame mapping for
+  all released train/val IDs and added full-feature verification and ordered
+  split restoration.
 - Added the resource preparation/provenance guide.
 - Published the [Final ARCTIC models](releases/arctic-final/README.md): paired
   dual-codebook tokenizer and Stage 3 weights, PointNet initialization, matching

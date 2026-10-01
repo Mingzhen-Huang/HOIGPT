@@ -1,11 +1,13 @@
 """Command-line preparation of checkpoint-free HOIGPT resources."""
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
 import numpy as np
 
+from .arctic_captions import caption_candidates
 from .features import arctic_features, grab_features
 from .resources import new_outputs, normalization, object_cache, sample_id, sha256, split_ids, write_object_cache
 
@@ -35,8 +37,11 @@ def read_manifest(path, dataset):
         ids.add(name)
         if not isinstance(clip['source'], str) or not clip['source']:
             raise ValueError(f'{name}: missing raw source')
-        caption = clip['caption']
-        if not isinstance(caption, str) or not caption.strip() or any(c in caption for c in '#\n\r'):
+        caption = clip.get('caption')
+        digest = clip.get('caption_sha256')
+        if caption is None and (dataset != 'arctic' or not isinstance(digest, str) or len(digest) != 64):
+            raise ValueError(f'{name}: caption or ARCTIC caption_sha256 is required')
+        if caption is not None and (not isinstance(caption, str) or not caption.strip() or any(c in caption for c in '#\n\r')):
             raise ValueError(f'{name}: caption must be one nonempty line without #')
         if 'tokens' in clip:
             tokens = clip['tokens']
@@ -44,6 +49,20 @@ def read_manifest(path, dataset):
                 raise ValueError(f'{name}: tokens must be a space-separated word/POS string')
         if clip.get('split') not in (None, 'train', 'val', 'test'):
             raise ValueError(f'{name}: split must be train, val, test, or omitted')
+    split_ids = manifest.get('split_ids')
+    if split_ids is not None:
+        if not isinstance(split_ids, dict):
+            raise ValueError('split_ids must be a mapping of split names to ordered IDs')
+        expected = {split: {clip['id'] for clip in clips if clip.get('split') == split}
+                    for split in ('train', 'val', 'test')}
+        expected = {name: ids for name, ids in expected.items() if ids}
+        if set(split_ids) != set(expected):
+            raise ValueError('split_ids names do not match clip split assignments')
+        for split, ordered in split_ids.items():
+            if not isinstance(ordered, list) or any(not isinstance(x, str) for x in ordered):
+                raise ValueError(f'{split}: split_ids must be an ordered list of IDs')
+            if len(ordered) != len(set(ordered)) or set(ordered) != expected[split]:
+                raise ValueError(f'{split}: ordered IDs do not match clip split assignments')
     return manifest
 
 
@@ -58,9 +77,19 @@ def convert(args):
         if 'tokens' in clip:
             paths.append(out / 'texts' / f'{clip["id"]}.txt')
     new_outputs(paths)
+    if args.dataset == 'arctic' and any('caption' not in c for c in manifest['clips']) and not args.descriptions:
+        raise ValueError('ARCTIC digest-only mapping requires --descriptions from your own dataset copy')
     records = []
     for clip in manifest['clips']:
         source = inside(args.raw_root, clip['source'])
+        caption = clip.get('caption')
+        if caption is None:
+            candidates = caption_candidates(args.descriptions, clip['source'], clip['start'], clip['end'])
+            matches = [candidate for candidate in candidates
+                       if hashlib.sha256(candidate.encode()).hexdigest() == clip['caption_sha256']]
+            if len(matches) != 1:
+                raise ValueError(f"{clip['id']}: cannot uniquely recover caption from local ARCTIC descriptions")
+            caption = matches[0]
         if args.dataset == 'arctic':
             if source.name.split('_')[0] != clip['id'].split('_')[1]:
                 raise ValueError(f'{clip["id"]}: object name differs from ARCTIC source sequence')
@@ -84,13 +113,16 @@ def convert(args):
         if features.shape[1] != 208 or not np.isfinite(features).all():
             raise ValueError(f'{clip["id"]}: invalid converted features')
         np.save(out / 'new_joints' / f'{clip["id"]}.npy', features)
-        (out / 'raw_captions' / f'{clip["id"]}.txt').write_text(clip['caption'] + '\n')
+        (out / 'raw_captions' / f'{clip["id"]}.txt').write_text(caption + '\n')
         if 'tokens' in clip:
-            (out / 'texts' / f'{clip["id"]}.txt').write_text(f'{clip["caption"]}#{clip["tokens"]}#0.0#0.0\n')
+            (out / 'texts' / f'{clip["id"]}.txt').write_text(f'{caption}#{clip["tokens"]}#0.0#0.0\n')
         records.append({'id': clip['id'], 'frames': len(features), **hashes})
         print(f'{clip["id"]}: {features.shape}')
     for split in split_names:
-        (out / f'{split}.txt').write_text(''.join(c['id'] + '\n' for c in manifest['clips'] if c.get('split') == split))
+        ordered = manifest.get('split_ids', {}).get(split)
+        if ordered is None:
+            ordered = [c['id'] for c in manifest['clips'] if c.get('split') == split]
+        (out / f'{split}.txt').write_text(''.join(clip_id + '\n' for clip_id in ordered))
     (out / 'source_manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
     (out / 'preprocessing.json').write_text(json.dumps({
         'manifest_sha256': sha256(args.manifest), 'dataset': args.dataset,
@@ -210,12 +242,25 @@ def restore(args):
     mean, std = (np.asarray(normalization_data[key], dtype=np.float64) for key in ('mean', 'std'))
     if mean.shape != (208,) or std.shape != (208,) or not np.isfinite(mean).all() or not np.isfinite(std).all() or (std <= 0).any():
         raise ValueError('Invalid snapshot normalization')
-    new_outputs([out / p.name for p in split_paths] + [out / 'mean.npy', out / 'std.npy'])
+    clip_map = snapshot / 'arctic_clips.json'
+    if clip_map.is_file():
+        mapping = read_manifest(clip_map, 'arctic')
+        for path in split_paths:
+            if mapping.get('split_ids', {}).get(path.stem) != split_ids(path):
+                raise ValueError(f'{path.name}: snapshot IDs differ from the clip mapping')
+            if mapping.get('split_sha256', {}).get(path.stem) != sha256(path):
+                raise ValueError(f'{path.name}: snapshot hash differs from the clip mapping')
+    outputs = [out / p.name for p in split_paths] + [out / 'mean.npy', out / 'std.npy']
+    if clip_map.is_file():
+        outputs.append(out / clip_map.name)
+    new_outputs(outputs)
     for path in split_paths:
         (out / path.name).write_bytes(path.read_bytes())
     np.save(out / 'mean.npy', mean)
     np.save(out / 'std.npy', std)
-    print('Restored existing lists and normalization only. No missing split was invented.')
+    if clip_map.is_file():
+        (out / clip_map.name).write_bytes(clip_map.read_bytes())
+    print('Restored saved lists, normalization, and clip mapping when available. No missing split was invented.')
 
 
 def objects(args):
@@ -248,6 +293,7 @@ def main():
     p = commands.add_parser('convert', help='Convert manifest-selected raw ARCTIC/GRAB clips to 208 features')
     p.add_argument('--dataset', choices=['arctic', 'grab'], required=True)
     p.add_argument('--raw-root', required=True)
+    p.add_argument('--descriptions', help='Locally obtained ARCTIC descriptions (required for digest-only clip maps)')
     p.add_argument('--manifest', required=True)
     p.add_argument('--output', required=True)
     p.set_defaults(run=convert)
@@ -267,7 +313,7 @@ def main():
     p.add_argument('--split-file', required=True)
     p.add_argument('--output', required=True)
     p.set_defaults(run=stats)
-    p = commands.add_parser('restore-snapshot', help='Restore available split lists and normalization; not raw ID mapping')
+    p = commands.add_parser('restore-snapshot', help='Restore saved split lists, normalization, and clip mapping when available')
     p.add_argument('--snapshot', required=True)
     p.add_argument('--output', required=True)
     p.set_defaults(run=restore)
